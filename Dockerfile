@@ -1,12 +1,23 @@
-FROM ubuntu:focal
+FROM harbor.prod.paas.pop.noris.de/dockerhub/library/ubuntu:focal
 
-LABEL maintainer="Ralf Geschke <ralf@kuerbis.org>"
+LABEL maintainer="Lars Lehmann <lars@lars-lehmann.net>"
 
-LABEL last_changed="2020-05-11"
+LABEL last_changed="2020-12-09"
 
 
 # necessary to set default timezone Etc/UTC
 ENV DEBIAN_FRONTEND noninteractive
+
+
+RUN apt update \
+  && apt install -y curl gnupg2 \
+  && curl https://repo.powerdns.com/FD380FBB-pub.asc | apt-key add -
+
+
+COPY pdns.list /etc/apt/sources.list.d/pdns.list
+
+
+COPY pdns.preferences /etc/apt/preferences.d/pdns
 
 
 # testing Ubuntu 20.04 focal, in case of errors, switch to 18.04 again
@@ -17,7 +28,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
   && apt-get install -y locales \
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
-  && apt-get install -y curl git gnupg pdns-server pdns-backend-sqlite3 pdns-backend-mysql mysql-client \
+  && apt-get install -y git pdns-server pdns-backend-sqlite3 pdns-backend-mysql mysql-client \
   && rm -rf /var/lib/apt/lists/* 
 
 

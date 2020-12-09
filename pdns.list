@@ -1,0 +1,2 @@
+# USE PowerDNS 4.4.X
+deb [arch=amd64] http://repo.powerdns.com/ubuntu focal-auth-43 main

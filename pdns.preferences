@@ -1,0 +1,4 @@
+# USE PowerDNS 4.4.X
+Package: pdns-*
+Pin: origin repo.powerdns.com
+Pin-Priority: 600
